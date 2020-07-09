@@ -21,6 +21,7 @@ public class StaticProviderTest {
     @Order(1)
     @Unfriendly
     public void testUnfriendly() {
+        System.out.println("Inside Test CL: " + Thread.currentThread().getContextClassLoader().toString());
         assertEquals("my foe!",StaticProvider.getGreeting());
     }
 }
