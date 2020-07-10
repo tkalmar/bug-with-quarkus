@@ -18,7 +18,7 @@ public class StaticProviderTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     @Unfriendly
     public void testUnfriendly() {
         System.out.println("Inside Test CL: " + Thread.currentThread().getContextClassLoader().toString());
