@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @Target({METHOD, TYPE})
 @Retention(RUNTIME)
 @ExtendWith(UnfriendlyExtension.class)
+@InterceptorBinding
 public @interface Unfriendly {
 }
 
