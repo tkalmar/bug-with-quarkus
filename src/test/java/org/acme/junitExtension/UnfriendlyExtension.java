@@ -16,14 +16,19 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.ws.rs.ext.InterceptorContext;
 
+import io.quarkus.test.junit.callback.QuarkusTestBeforeEachCallback;
+import io.quarkus.test.junit.callback.QuarkusTestMethodContext;
 import org.acme.StaticProvider;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Interceptor
 @Unfriendly
-public class UnfriendlyExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+public class UnfriendlyExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback, QuarkusTestBeforeEachCallback {
+    Logger LOG = LoggerFactory.getLogger(UnfriendlyExtension.class);
     @Override
     public void beforeTestExecution(final ExtensionContext context) throws Exception {
         setProvider();
@@ -49,5 +54,14 @@ public class UnfriendlyExtension implements BeforeTestExecutionCallback, AfterTe
     @Override
     public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
         resetProvider();
+    }
+
+    @Override
+    public void beforeEach(QuarkusTestMethodContext quarkusTestMethodContext) {
+        Unfriendly annotation = quarkusTestMethodContext.getTestMethod().getAnnotation(Unfriendly.class);
+        if (annotation == null) {
+            LOG.warn("Annotation is null on method: "+ quarkusTestMethodContext.getTestMethod().getName());
+        }
+
     }
 }
